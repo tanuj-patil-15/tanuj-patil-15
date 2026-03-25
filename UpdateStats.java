@@ -8,33 +8,41 @@ public class UpdateStats {
     public static void main(String[] args) throws Exception {
         String username = "tanujp15";
         
-        // Fetch data
-        String query = "{\"query\": \"query { matchedUser(username: \\\"" + username + "\\\") { submitStats { acSubmissionNum { difficulty count } } } }\"}";
+        // 1. Fetch data including Calendar stats (Active Days & Streak)
+        String query = "{\"query\": \"query { matchedUser(username: \\\"" + username + "\\\") { " +
+                       "submitStats { acSubmissionNum { difficulty count } } " +
+                       "userCalendar { totalActiveDays streak } } }\"}";
+        
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://leetcode.com/graphql"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(query))
                 .build();
+        
         String jsonData = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
         
-        // Parse counts
+        // 2. Extract stats
         int easy = extract(jsonData, "Easy");
         int medium = extract(jsonData, "Medium");
         int hard = extract(jsonData, "Hard");
+        int activeDays = extractInt(jsonData, "totalActiveDays");
+        int streak = extractInt(jsonData, "streak");
 
-        // Build stats table
+        // 3. Create the Markdown Table
         String statsMarkdown = String.format(
-            "| Difficulty | Solved Count |\n" +
+            "| Stat | Count |\n" +
             "| :--- | :--- |\n" +
             "| 🟢 **Easy** | %d |\n" +
             "| 🟡 **Medium** | %d |\n" +
             "| 🔴 **Hard** | %d |\n" +
-            "| 🔥 **Total** | **%d** |",
-            easy, medium, hard, (easy + medium + hard)
+            "| 🔥 **Total Solved** | **%d** |\n" +
+            "| 📅 **Active Days** | %d |\n" +
+            "| ⚡ **Current Streak** | %d |",
+            easy, medium, hard, (easy + medium + hard), activeDays, streak
         );
 
-        // Read and Update README
+        // 4. Update README.md
         Path path = Paths.get("README.md");
         String content = Files.readString(path);
         
@@ -49,22 +57,5 @@ public class UpdateStats {
                               + "\n" + statsMarkdown + "\n"
                               + content.substring(endIdx);
             
-            // Update Date
             String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-            newContent = newContent.replace("{{DATE}}", now);
-            
-            Files.writeString(path, newContent);
-            System.out.println("README updated successfully!");
-        } else {
-            System.out.println("Markers not found in README.md");
-        }
-    }
-
-    private static int extract(String json, String diff) {
-        try {
-            String tag = "\"difficulty\":\"" + diff + "\",\"count\":";
-            int start = json.indexOf(tag) + tag.length();
-            return Integer.parseInt(json.substring(start, json.indexOf("}", start)));
-        } catch (Exception e) { return 0; }
-    }
-}
+            newContent = newContent.replaceAll
