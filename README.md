@@ -7,7 +7,7 @@
 | 🟡 **Medium** | 194 |
 | 🔴 **Hard** | 39 |
 ### 🧩 Submission Heatmap
-![LeetCode Stats](https://leetcode-stats-six.vercel.app/api?username=tanujp15&theme=dark)
+![LeetCode Heatmap](https://leetcode.com/charts/tanujp15/calendar.svg)
 
 ---
 *Last updated: {{DATE}}*
