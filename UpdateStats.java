@@ -1,21 +1,19 @@
 import java.net.URI;
 import java.net.http.*;
 import java.nio.file.*;
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 public class UpdateStats {
     public static void main(String[] args) throws Exception {
         String username = "tanujp15";
-        
-        // 1. Fetch real data from LeetCode
         String jsonData = fetchFromLeetCode(username);
         
-        // 2. Parse the numbers
         int easy = extract(jsonData, "Easy");
         int medium = extract(jsonData, "Medium");
         int hard = extract(jsonData, "Hard");
-        
-        // 3. Build the table
+        int total = easy + medium + hard;
+
         String statsMarkdown = String.format(
             "| Difficulty | Solved Count |\n" +
             "| :--- | :--- |\n" +
@@ -23,20 +21,24 @@ public class UpdateStats {
             "| 🟡 **Medium** | %d |\n" +
             "| 🔴 **Hard** | %d |\n" +
             "| 🔥 **Total** | **%d** |",
-            easy, medium, hard, (easy + medium + hard)
+            easy, medium, hard, total
         );
 
-        // 4. Update README
         Path path = Paths.get("README.md");
         String content = Files.readString(path);
+        
+        // Update Stats
         String updated = content.replaceAll("(?s).*?", 
             "\n" + statsMarkdown + "\n");
         
-        // Update the date too
-        updated = updated.replace("{{DATE}}", LocalDate.now().toString());
+        // Update Date (Fixes the {{DATE}} placeholder)
+        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        updated = updated.replace("{{DATE}}", now);
+        // This handles cases where {{DATE}} was already replaced by a real date
+        updated = updated.replaceAll("Last updated: .*", "Last updated: " + now);
         
         Files.writeString(path, updated);
-        System.out.println("Profile Updated!");
+        System.out.println("Success! Updated stats for " + username);
     }
 
     private static String fetchFromLeetCode(String user) throws Exception {
