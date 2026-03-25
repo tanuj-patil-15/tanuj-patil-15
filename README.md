@@ -1,6 +1,13 @@
 # Hi, I'm Tanuj! 👋
 
-### 📊 My LeetCode Journey
-Fetching latest stats... ⏳
+### 📊 LeetCode Highlights
+| Difficulty | Solved Count |
+| :--- | :--- |
+| 🟢 **Easy** | 168 |
+| 🟡 **Medium** | 194 |
+| 🔴 **Hard** | 39 |
+### 🧩 Submission Heatmap
+![LeetCode Stats](https://leetcode-stats-six.vercel.app/api?username=tanujp15&theme=dark)
+
 ---
-*This profile updates daily via a custom Java automation.*
+*Last updated: {{DATE}}*
