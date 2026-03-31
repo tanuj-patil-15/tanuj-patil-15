@@ -1,10 +1,8 @@
 name: Update LeetCode Stats
-
 on:
   workflow_dispatch: # This adds the manual "Run" button
   schedule:
     - cron: '0 0 * * *'
-
 jobs:
   build:
     runs-on: ubuntu-latest
