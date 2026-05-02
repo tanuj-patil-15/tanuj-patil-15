@@ -5,13 +5,13 @@
 | Stat | Count |
 | :--- | :--- |
 | 🟢 **Easy** | 176 |
-| 🟡 **Medium** | 211 |
+| 🟡 **Medium** | 212 |
 | 🔴 **Hard** | 48 |
-| 🔥 **Total Solved** | **435** |
+| 🔥 **Total Solved** | **436** |
 | ⚡ **Current Streak** | 0 |
 <!-- LEETCODE_STATS_END -->
 ### 🧩 Submission Heatmap
 ![LeetCode Stats](https://leetcard.jacoblin.cool/tanujp15?theme=dark&font=Recursive&ext=heatmap)
 
 ---
-*Last updated: 2026-05-01 03:52*
+*Last updated: 2026-05-02 03:26*
